@@ -1,0 +1,7 @@
+[package]
+name = "messenger"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+abes_nice_things = { git = "https://github.com/Course-Brains/abes_nice_things.git", rev = "5e7dbe8"}
