@@ -28,53 +28,65 @@ fn wrap_words(string: &str, width: usize) -> Vec<String> {
     let mut wrapped: Vec<String> = Vec::new(); // returns each line as a seperate element of the vec
     for word in wordlist {
         let word_length = word.chars().count(); // .len() is byte based, .chars() is still not fully correct, but it's close enough for a program this simple
+        println!("remaining space = {width} - length of '{current_line}', or {}", width - current_line.chars().count());
         let remaining_space = width - current_line.chars().count(); // space left in line to put words
         if word_length > width {
-            match remaining_space {
-                0 => {
-                    wrapped.push(current_line); // add full line
-                    current_line = String::with_capacity(width); // reset current line
-                },
-                _ => {
-                    for i in 0..(word_length / width) /* every full line */ {
+            println!("word ('{word}') too large, wrapping");
+            let empty_slots = remaining_space; // how much padding is needed?
+            println!("empty slots = '{empty_slots}'");
+            for _ in 0..empty_slots {current_line.push(' ');}; // pad by that much
+            println!("padded line = '{current_line}'");
+            wrapped.push(current_line); // add full line
+            current_line = String::with_capacity(width); // reset current line
+            // by this point, line is complete, and should be pushed and reset before further use
+
+            for i in 0..(word_length / width) /* every full line */ {
                         let this_range = (i*width)..((i+1)*width);
                         let this_line: &str = &word[this_range];
                         wrapped.push(this_line.to_string());
-                    }
-                    let residual: usize = word_length % width;
-                    if residual > 0 {
-                        let last_line_start: usize = word_length - residual;
-                        let word_slice: &str = &word[last_line_start..];
-                        current_line.push_str(word_slice);
-                        for _ in 0..(width - residual) {
-                            current_line.push(' ');
-                        }
-
-                        wrapped.push(current_line)
-                    }
-                    current_line = String::with_capacity(width);
-
-                }
             }
+            let residual: usize = word_length % width;
+            if residual > 0 {
+                let last_line_start: usize = word_length - residual;
+                let word_slice: &str = &word[last_line_start..];
+                current_line.push_str(word_slice);
+                for _ in 0..(width - residual) {
+                    current_line.push(' ');
+                }
+                wrapped.push(current_line)
+            }
+            current_line = String::with_capacity(width);
         }
-        else if word_length == 0 && word != ""{
+        else if remaining_space == width && word != ""{
+            println!("\nfirst word in this line; '{word}'");
             current_line.push_str(word); // first word on line
             // no padding no the first word, don't want to have all lines start with a space
         }
-        else if word_length <= remaining_space { // if a padding space and the word fit onto the rest of the line
+        else if word_length + 1 <= remaining_space { // if a padding space and the word fit onto the rest of the line
+            // + 1 handles the padding space 
+            println!("padding word; '{word}'");
+            println!("current line; '{current_line}'");
             current_line.push(' '); // add spacing
             current_line.push_str(word); // add word
         }
-        else if word_length > remaining_space {
-            // word does not fit on this line
+        else if word_length + 1 > remaining_space {
+            // word does not fit on this line with a padding space
             // word does fit on the next line, or it would have been caught already
             // as the first if statement catches all words that do not fit on any line
-            
+            println!("\npadding and putting word on next line; '{word}'");
+
             for _ in 0..remaining_space {current_line.push(' ')}; // pads rest of current line with spaces
+            print!("padded_line; '{current_line}'");
             wrapped.push(current_line); // add full line
+            
             current_line = String::with_capacity(width); // reset current line
             current_line.push_str(word); // put word at start of next line
+            println!("next line; '{current_line}'")
         } 
+    }
+    if current_line != String::new() {
+        wrapped.push(current_line);
+
     }
     wrapped
 }
