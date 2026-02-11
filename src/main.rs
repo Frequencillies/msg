@@ -1,12 +1,11 @@
 use std::fmt::Display;
 use std::io::Write;
+use std::process::{Command};
 use std::net::TcpStream;
 use abes_nice_things::{self, FromBinary, ToBinary, input};
 
 use crate::display::term_size;
 pub mod display;
-
-const ANSI_CLEAR: &str = "\033[2J";
 
 #[derive(Clone)]
 struct Snippet {
@@ -37,9 +36,13 @@ struct State {
     log: Vec<Snippet>,
 }
 
+fn clear() {
+    let _ = Command::new("printf").arg("\033[2J").output(); // ansi clear sequence
+}
+
 impl State {
     fn render(&self) { 
-        print!("{}", ANSI_CLEAR); // clear terminal
+        clear(); // clear terminal
         for msg in &self.log {
             // display all messages
             print!("{msg}") 
