@@ -38,13 +38,9 @@ struct State {
     log: Vec<Snippet>,
 }
 
-fn run(command: String) {
-    let _ = Command::new(command).output();
-}
-
 impl State {
     fn render(&self) { 
-        print!(ANSI_CLEAR); // clear terminal
+        print!("{}", ANSI_CLEAR); // clear terminal
         for msg in &self.log {
             // display all messages
             print!("{msg}") 
