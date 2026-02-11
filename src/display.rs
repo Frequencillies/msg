@@ -28,14 +28,14 @@ fn wrap_words(string: &str, width: usize) -> Vec<String> {
     let mut wrapped: Vec<String> = Vec::new(); // returns each line as a seperate element of the vec
     for word in wordlist {
         let word_length = word.chars().count(); // .len() is byte based, .chars() is still not fully correct, but it's close enough for a program this simple
-        println!("remaining space = {width} - length of '{current_line}', or {}", width - current_line.chars().count());
+        // println!("remaining space = {width} - length of '{current_line}', or {}", width - current_line.chars().count());
         let remaining_space = width - current_line.chars().count(); // space left in line to put words
         if word_length > width {
-            println!("word ('{word}') too large, wrapping");
+            // println!("word ('{word}') too large, wrapping");
             let empty_slots = remaining_space; // how much padding is needed?
-            println!("empty slots = '{empty_slots}'");
+            // println!("empty slots = '{empty_slots}'");
             for _ in 0..empty_slots {current_line.push(' ');}; // pad by that much
-            println!("padded line = '{current_line}'");
+            // println!("padded line = '{current_line}'");
             wrapped.push(current_line); // add full line
             current_line = String::with_capacity(width); // reset current line
             // by this point, line is complete, and should be pushed and reset before further use
@@ -58,14 +58,14 @@ fn wrap_words(string: &str, width: usize) -> Vec<String> {
             current_line = String::with_capacity(width);
         }
         else if remaining_space == width && word != ""{
-            println!("\nfirst word in this line; '{word}'");
+            // println!("\nfirst word in this line; '{word}'");
             current_line.push_str(word); // first word on line
             // no padding no the first word, don't want to have all lines start with a space
         }
         else if word_length + 1 <= remaining_space { // if a padding space and the word fit onto the rest of the line
             // + 1 handles the padding space 
-            println!("padding word; '{word}'");
-            println!("current line; '{current_line}'");
+            // println!("padding word; '{word}'");
+            // println!("current line; '{current_line}'");
             current_line.push(' '); // add spacing
             current_line.push_str(word); // add word
         }
@@ -73,15 +73,15 @@ fn wrap_words(string: &str, width: usize) -> Vec<String> {
             // word does not fit on this line with a padding space
             // word does fit on the next line, or it would have been caught already
             // as the first if statement catches all words that do not fit on any line
-            println!("\npadding and putting word on next line; '{word}'");
+            // println!("\npadding and putting word on next line; '{word}'");
 
             for _ in 0..remaining_space {current_line.push(' ')}; // pads rest of current line with spaces
-            print!("padded_line; '{current_line}'");
+            // print!("padded_line; '{current_line}'");
             wrapped.push(current_line); // add full line
             
             current_line = String::with_capacity(width); // reset current line
             current_line.push_str(word); // put word at start of next line
-            println!("next line; '{current_line}'")
+            // println!("next line; '{current_line}'")
         } 
     }
     if current_line != String::new() {
@@ -104,7 +104,8 @@ pub fn enclose_text(text: &String, width: usize) -> String {
     let mut boxxed_vec = Vec::new();
     boxxed_vec.push(top_line);
     for line in wrapped_text {
-        let boxxed_line = format!("║{line}║");
+        let padding = " ".repeat(width - line.chars().count());
+        let boxxed_line = format!("║{line}{padding}║");
         boxxed_vec.push(boxxed_line);
     }
     let botttom_line = format!("╚{straight_line}╝");

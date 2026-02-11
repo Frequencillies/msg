@@ -7,6 +7,8 @@ use abes_nice_things::{self, FromBinary, ToBinary, input};
 use crate::display::term_size;
 pub mod display;
 
+const ANSI_CLEAR = "";
+
 #[derive(Clone)]
 struct Snippet {
     text: String
@@ -42,7 +44,7 @@ fn run(command: String) {
 
 impl State {
     fn render(&self) { 
-        run(String::from("clear")); // clear terminal
+        print!(ANSI_CLEAR); // clear terminal
         for msg in &self.log {
             // display all messages
             print!("{msg}") 
