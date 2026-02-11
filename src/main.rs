@@ -7,7 +7,7 @@ use abes_nice_things::{self, FromBinary, ToBinary, input};
 use crate::display::term_size;
 pub mod display;
 
-const ANSI_CLEAR = "";
+const ANSI_CLEAR: &str = "\033[2J";
 
 #[derive(Clone)]
 struct Snippet {
