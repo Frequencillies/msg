@@ -104,7 +104,7 @@ pub fn enclose_text(text: &String, width: usize) -> String {
     let mut boxxed_vec = Vec::new();
     boxxed_vec.push(top_line);
     for line in wrapped_text {
-        let padding = " ".repeat(width - (1 +line.chars().count()));
+        let padding = " ".repeat(width - (2 +line.chars().count()));
         let boxxed_line = format!("║{line}{padding}║");
         boxxed_vec.push(boxxed_line);
     }
