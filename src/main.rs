@@ -37,7 +37,7 @@ struct State {
 }
 
 fn clear() {
-    let _ = Command::new("printf").arg("\033[2J").output(); // ansi clear sequence
+    print!("{}[2J", 27 as char);
 }
 
 impl State {
