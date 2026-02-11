@@ -1,1 +1,1 @@
-/home/alicenull/rust/messenger/target/debug/messenger: /home/alicenull/rust/messenger/src/main.rs
+/home/alicenull/rust/snippets/target/debug/messenger: /home/alicenull/rust/snippets/src/main.rs

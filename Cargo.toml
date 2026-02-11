@@ -5,3 +5,5 @@ edition = "2024"
 
 [dependencies]
 abes_nice_things = { git = "https://github.com/Course-Brains/abes_nice_things.git", rev = "5e7dbe8"}
+char-ranges = "0.1.2"
+crossterm = "0.29.0"
