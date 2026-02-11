@@ -1,6 +1,5 @@
 use std::fmt::Display;
 use std::io::Write;
-use std::process::{Command};
 use std::net::TcpStream;
 use abes_nice_things::{self, FromBinary, ToBinary, input};
 
